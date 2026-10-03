@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101713">
+  <title>Calculadora de factura</title>
+  <link rel="stylesheet" href="stylo.css">
+  <script src="../java.js" defer></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Navegación principal">
+    <a class="brand" href="#" aria-label="Calculadora de factura, inicio">
+      <span class="brand-mark" aria-hidden="true">$</span>
+      <span>Cuenta Clara</span>
+    </a>
+    <span class="topbar-note">Calculadora de factura</span>
+  </nav>
+
+  <main class="page-shell">
+    <header class="page-heading">
+      <p class="eyebrow">FACTURACIÓN SIMPLE</p>
+      <h1>Calcula tu factura</h1>
+      <p class="intro">Agrega todos los productos o servicios de la compra y revisa el total.</p>
+    </header>
+
+    <div class="calculator-layout">
+      <section class="card form-card" aria-labelledby="form-title">
+        <div class="card-heading">
+          <div>
+            <p class="section-label">DETALLE</p>
+            <h2 id="form-title">Productos de la compra</h2>
+          </div>
+          <span class="step-badge" aria-hidden="true">01</span>
+        </div>
+
+        <form id="invoice-form" novalidate>
+          <div id="items-container" class="items-container"></div>
+          <button class="button button-add" id="add-item-button" type="button">+ Agregar otro producto</button>
+
+          <template id="item-template">
+            <div class="invoice-item" data-item-row>
+              <div class="item-heading">
+                <span class="item-number" data-item-number>Producto 1</span>
+                <button class="remove-item-button" type="button" data-remove-item aria-label="Quitar este producto" hidden>Quitar</button>
+              </div>
+              <div class="field">
+                <label>Producto o servicio
+                  <select data-field="product" required>
+                    <option value="" selected disabled>Selecciona una opción</option>
+              <optgroup label="Productos">
+                <option value="Cuaderno" data-price="4500">Cuaderno — $ 4.500</option>
+                <option value="Lápiz" data-price="1200">Lápiz — $ 1.200</option>
+                <option value="Bolígrafo" data-price="1800">Bolígrafo — $ 1.800</option>
+                <option value="Borrador" data-price="900">Borrador — $ 900</option>
+                <option value="Regla" data-price="2500">Regla — $ 2.500</option>
+                <option value="Mochila" data-price="68000">Mochila — $ 68.000</option>
+                <option value="Botella reutilizable" data-price="22000">Botella reutilizable — $ 22.000</option>
+                <option value="Camiseta" data-price="35000">Camiseta — $ 35.000</option>
+                <option value="Gorra" data-price="28000">Gorra — $ 28.000</option>
+                <option value="Audífonos" data-price="55000">Audífonos — $ 55.000</option>
+                <option value="Cargador USB" data-price="32000">Cargador USB — $ 32.000</option>
+                <option value="Cable USB" data-price="15000">Cable USB — $ 15.000</option>
+                <option value="Taza" data-price="18000">Taza — $ 18.000</option>
+                <option value="Agenda" data-price="16000">Agenda — $ 16.000</option>
+                <option value="Libro" data-price="42000">Libro — $ 42.000</option>
+                <option value="Lonchera" data-price="26000">Lonchera — $ 26.000</option>
+                <option value="Mouse" data-price="38000">Mouse — $ 38.000</option>
+                <option value="Teclado" data-price="72000">Teclado — $ 72.000</option>
+                <option value="Paraguas" data-price="30000">Paraguas — $ 30.000</option>
+                <option value="Lámpara de escritorio" data-price="48000">Lámpara de escritorio — $ 48.000</option>
+              </optgroup>
+              <optgroup label="Servicios">
+                <option value="Corte de cabello" data-price="25000">Corte de cabello — $ 25.000</option>
+                <option value="Manicure" data-price="30000">Manicure — $ 30.000</option>
+                <option value="Limpieza de hogar" data-price="80000">Limpieza de hogar — $ 80.000</option>
+                <option value="Reparación de computador" data-price="65000">Reparación de computador — $ 65.000</option>
+                <option value="Diseño de logotipo" data-price="150000">Diseño de logotipo — $ 150.000</option>
+                <option value="Clase particular" data-price="50000">Clase particular — $ 50.000</option>
+                <option value="Paseo de mascota" data-price="20000">Paseo de mascota — $ 20.000</option>
+                <option value="Fotografía" data-price="120000">Fotografía — $ 120.000</option>
+                <option value="Instalación de software" data-price="45000">Instalación de software — $ 45.000</option>
+                <option value="Mantenimiento de jardín" data-price="70000">Mantenimiento de jardín — $ 70.000</option>
+              </optgroup>
+              <option value="custom">Otro (ingresar manualmente)</option>
+                  </select>
+                </label>
+              </div>
+              <div class="field custom-product-field" data-custom-field hidden>
+                <label>Nombre del producto o servicio
+                  <input data-field="custom-product" type="text" placeholder="Escribe el nombre" autocomplete="off">
+                </label>
+              </div>
+              <div class="field-row item-fields">
+                <div class="field">
+                  <label>Precio unitario <span class="label-note" data-price-hint>se completa al elegir</span>
+                    <span class="input-with-prefix">
+                      <span aria-hidden="true">$</span>
+                      <input data-field="price" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal" required>
+                    </span>
+                  </label>
+                </div>
+                <div class="field">
+                  <label>Cantidad
+                    <input data-field="quantity" type="number" min="1" step="1" value="1" inputmode="numeric" required>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <div class="field">
+            <label for="discount">Descuento <span class="label-note">opcional · valor en pesos</span></label>
+            <div class="input-with-prefix">
+              <span aria-hidden="true">$</span>
+              <input id="discount" name="discount" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal">
+            </div>
+            <small class="field-hint">Se resta del subtotal antes de calcular el IVA.</small>
+          </div>
+
+          <div class="field">
+            <label for="payment">Dinero recibido <span class="label-note">opcional</span></label>
+            <div class="input-with-prefix">
+              <span aria-hidden="true">$</span>
+              <input id="payment" name="payment" type="number" min="0" step="0.01" placeholder="Si deseas revisar el cambio" inputmode="decimal">
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" type="submit">Calcular factura</button>
+            <button class="button button-secondary" id="clear-button" type="reset">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card result-card" aria-labelledby="result-title" aria-live="polite">
+        <div class="card-heading">
+          <div>
+            <p class="section-label">RESUMEN</p>
+            <h2 id="result-title">Tu factura</h2>
+          </div>
+          <span class="step-badge step-badge-accent" aria-hidden="true">02</span>
+        </div>
+
+        <div class="product-summary">
+          <span class="summary-icon" aria-hidden="true">✦</span>
+          <div>
+            <p class="summary-caption">Producto</p>
+            <p class="summary-value" id="result-product">Aún sin calcular</p>
+          </div>
+        </div>
+
+        <div class="amount-list">
+          <div class="amount-row">
+            <span>Subtotal</span>
+            <strong id="result-subtotal">$ 0</strong>
+          </div>
+          <div class="amount-row">
+            <span>Descuento</span>
+            <strong id="result-discount">− $ 0</strong>
+          </div>
+          <div class="amount-row">
+            <span>Neto antes de IVA</span>
+            <strong id="result-net">$ 0</strong>
+          </div>
+          <div class="amount-row">
+            <span>IVA <span class="tax-tag">19%</span></span>
+            <strong id="result-tax">$ 0</strong>
+          </div>
+        </div>
+
+        <div class="total-box">
+          <span>Total a pagar</span>
+          <strong id="result-total">$ 0</strong>
+          <small>Neto más IVA</small>
+        </div>
+
+        <div class="payment-result" id="payment-result" hidden>
+          <span id="payment-label">Cambio</span>
+          <strong id="result-change">$ 0</strong>
+        </div>
+
+        <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+        <p class="tax-note">El IVA del 19 % se calcula automáticamente sobre el neto después del descuento.</p>
+      </section>
+    </div>
+    <footer class="page-footer">Cálculos claros, cuentas tranquilas.</footer>
+  </main>
+</body>
+</html>
